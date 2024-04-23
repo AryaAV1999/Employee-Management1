@@ -1,0 +1,55 @@
+{%extends 'base.html'%}
+{%block body_block%}
+<div class="row">
+    <div class="col-4"></div>
+    <div class="col-4">
+        <h1>Welcome user {{request.user}}</h1>
+    </div>
+    <div class="col-4"></div>
+</div>
+<div class="row">
+    <div class="col-4"></div>
+    <div class="col-4">
+        <form action="" method="post" enctype="multipart/form-data">
+            {%csrf_token%}
+            {{form.as_p}}
+            <input type="Submit" value="post">
+        </form>
+    </div>
+    <div class="col-4"></div>
+</div>
+{%for blog in blogs%}
+<div class="row border mt-3">
+    <div class="col-4"></div>
+    <div class="col-4">
+        <p>{JobDescription.Name}}</p>
+        {%if blog.image%}
+        <img src="{{blog.image.url}}" class="img-fluid" alt="...">
+        <p>Posted_by {{JobDescription.description}}</p>
+        <p>Created_by {{JobDescription.Created_Date}}</p>
+        <p>Updated_by {{JobDescription.Updated_Date}}</p>
+        <p>Given_by {{JobDescription.Unique_id}}</p>
+
+        {%for comment in blog.comments_set.all%}
+        <div>{{comment.comment}}</div>
+        <div>{{comment.user}}</div>
+        {%endfor%}
+        <form action="{%url 'add-comment' blog.id%}"method="post">
+            {%csrf_token%}
+            {{comment_form.as_p}}
+            <input type="Submit" class="btn btn-info" value="Add">
+        </form>
+        {%endif%}
+        <div class="dropdown-item rounded d-flex justify-content-center align-items-center pointer text-muted p-1">
+            <a href="{%url 'add-like' blog.id%}"><i class="fas-fa-thumps-up me-3 "</i></a>
+            <p class="m-0">Like</p>
+        </div>
+    </div>
+    <div class="col-4"></div>
+</div>
+{%endfor%}
+{%endblock%}
+
+
+
+
